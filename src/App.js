@@ -1,25 +1,93 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import Home from './pages/Home';
+import Dogs from './pages/Dogs';
+import Persons from './pages/Persons';
 
-function App() {
+
+function NavLink(props) {
+  let liClass;
+
+  if (props.pageUrl === props.current) {
+    liClass = "nav-item ml-1 active";
+  } else {
+    liClass = "nav-item ml-1";
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <li class={liClass}>
+      <Link
+        onClick={() => props.handleClick(props.pageUrl)}
+        class='nav-link'
+        to={props.pageUrl}>{props.name}
+      </Link>
+    </li>
+  )
+}
+
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { current: '/' };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(url) {
+    this.setState(
+      { current: url }
+    )
+  };
+
+  render() {
+    return (
+      <Router>
+        <div id="navbar">
+          <nav class="navbar navbar-expand-lg navbar-light" style={{'background-color': '#e3f2fd'}}>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+
+                <NavLink 
+                handleClick={this.handleClick} 
+                pageUrl='/' name='Home' 
+                current={this.state.current} 
+                />
+
+                <NavLink handleClick={this.handleClick}
+                 pageUrl='/persons' name='Persons' 
+                 current={this.state.current} 
+                 />
+
+                <NavLink handleClick={this.handleClick}
+                 pageUrl='/dogs' name='Dogs' 
+                 current={this.state.current} 
+                 />
+
+              </ul>
+            </div>
+          </nav>
+          <div class="container-fluid mt-2">
+          <Route exact path="/" component={Home} />
+          </div>
+          <div class="container-fluid mt-2">
+          <Route path="/persons" component={Persons} />
+          </div>
+          <div class="container-fluid mt-2">
+          <Route path="/dogs" component={Dogs} />
+          </div>
+        </div>
+      </Router>
+    )
+  }
+}
+
+
+function App(props) {
+  return (
+    <Navbar />
   );
 }
 
