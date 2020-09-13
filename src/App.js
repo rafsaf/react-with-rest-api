@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Home from './pages/Home';
 import Dogs from './pages/Dogs';
@@ -28,15 +28,22 @@ function NavLink(props) {
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
+    let currentPath = localStorage.getItem('current');
+    if (currentPath === null) {
+      currentPath = '/';
+    }
 
-    this.state = { current: '/' };
+    this.state = { current: currentPath };
     this.handleClick = this.handleClick.bind(this);
   }
+
+
 
   handleClick(url) {
     this.setState(
       { current: url }
     )
+    localStorage.setItem('current', url);
   };
 
   render() {
