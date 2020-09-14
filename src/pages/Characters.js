@@ -110,7 +110,7 @@ class SimpleTable extends React.Component {
     .then(res => this.setState(this.setState(
       {
         data: this.state.data.concat(res.data),
-      }))).then(() => this.toLocalStorage());
+      }))).then(() => this.toLocalStorage()).then(this.scrollEnd);
     
   }
 
@@ -120,7 +120,7 @@ class SimpleTable extends React.Component {
     .then(res => this.setState(this.setState(
       {
         data: this.state.data.concat(res.data),
-      }))).then(() => this.toLocalStorage());
+      }))).then(() => this.toLocalStorage()).then(this.scrollEnd);
   }
 
   deleteRow(id) {
@@ -247,15 +247,11 @@ class SimpleTable extends React.Component {
   }
 }
 
-
-
-function Persons(props) {
+function Characters() {
   return (
-  <div id="persons">
   <SimpleTable />
-  </div>
   );
 }
 
 
-export default Persons;
+export default Characters;

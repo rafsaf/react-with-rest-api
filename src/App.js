@@ -1,53 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import { HashRouter as Router, Link, Route } from "react-router-dom";
 import Home from './pages/Home';
-import Persons from './pages/Persons';
+import Characters from './pages/Characters';
 
-
-function NavLink(props) {
-  let liClass;
-
-  if (props.pageUrl === props.current) {
-    liClass = "nav-item ml-1 active";
-  } else {
-    liClass = "nav-item ml-1";
-  };
-
-  return (
-    <li className={liClass}>
-      <Link
-        onClick={() => props.handleClick(props.pageUrl)}
-        className='nav-link'
-        to={props.pageUrl}>{props.name}
-      </Link>
-    </li>
-  )
-}
 
 class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    let currentPath = localStorage.getItem('current');
-    if (currentPath === null) {
-      currentPath = '/';
-    }
-
-    this.state = { current: currentPath };
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-
-
-  handleClick(url) {
-    this.setState(
-      { current: url }
-    )
-    localStorage.setItem('current', url);
-  };
 
   render() {
     return (
-      <Router>
+      <Router basename='/'>
         <div id="navbar">
           <nav className="navbar navbar-expand-lg navbar-light" style={{'background-color': '#e3f2fd'}}>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,16 +17,8 @@ class Navbar extends React.Component {
             <div className="collapse navbar-collapse" id="navbarText">
               <ul className="navbar-nav mr-auto">
 
-                <NavLink 
-                handleClick={this.handleClick} 
-                pageUrl='/' name='Home' 
-                current={this.state.current} 
-                />
-
-                <NavLink handleClick={this.handleClick}
-                 pageUrl='/persons' name='Persons' 
-                 current={this.state.current} 
-                 />
+            <li className='nav-link'><Link to="/">Home</Link></li>
+            <li className='nav-link'><Link to="/characters">Characters</Link></li>
 
 
               </ul>
@@ -75,7 +28,7 @@ class Navbar extends React.Component {
           <Route exact path="/" component={Home} />
           </div>
           <div className="container-fluid mt-2">
-          <Route path="/persons" component={Persons} />
+          <Route path="/characters" component={Characters} />
           </div>
         </div>
       </Router>
