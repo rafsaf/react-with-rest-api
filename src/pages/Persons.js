@@ -13,7 +13,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';import Hidden from '@material-ui/core/Hidden';
 
 class TableSingleRow extends React.Component {
   constructor(props) {
@@ -161,34 +161,38 @@ class SimpleTable extends React.Component {
         <div className='buttons'>
         <List component="nav" aria-label="mailbox folders">
           <ListItem>
+          <Icon>list</Icon>
+          <Hidden smDown><ListItemText primary="&nbsp; Options" /></Hidden>
           
-          <ListItemText primary="Options" />
           
           </ListItem>
           <Divider dark />
           <ListItem button onClick={this.addMiddle}>
           <Icon>add_circle</Icon>
-          <ListItemText primary="&nbsp;Add middle" />
+          <Hidden smDown>
+          <ListItemText primary="&nbsp; Add middle" />
+          </Hidden>
           </ListItem>
           <Divider light />
           <ListItem button onClick={this.addLast}>
-          <Icon>add_circle</Icon>
-          <ListItemText primary="&nbsp;Add last" />
+          <Icon>add_box</Icon>
+          <Hidden smDown><ListItemText primary="&nbsp; Add last" /></Hidden>
           </ListItem>
           <Divider light />
           <ListItem button onClick={this.scrollStart}>
             <Icon>arrow_drop_up</Icon>
-          <ListItemText primary="&nbsp; Go up" />
+            <Hidden smDown><ListItemText primary="&nbsp; Go up" /></Hidden>
           </ListItem>
           <Divider light />
           <ListItem button onClick={this.scrollEnd}>
             <Icon>arrow_drop_down</Icon>
-          <ListItemText primary="&nbsp; Go down" />
+            <Hidden smDown><ListItemText primary="&nbsp; Go down" /></Hidden>
           </ListItem>
           <Divider light />
           <ListItem button onClick={this.deleteAllRows}>
           <Icon color='secondary'>delete</Icon>
-          <ListItemText primary="&nbsp;Remove all" />
+          <Hidden smDown><ListItemText primary="&nbsp; Remove all" /></Hidden>
+          
           </ListItem>
           <Divider light />
 
