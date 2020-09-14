@@ -33,9 +33,12 @@ function AboutFragment(props) {
   return (
     <div id={props.name}>
 
-    <div className="alert alert-primary mt-2" role="alert">
-      {props.title}
-    </div>
+    <div className="ml-2 mt-2" style={{
+          fontWeight:'bold',
+          textDecoration:'underline'
+        }}>
+          <h2>{props.title}</h2>
+      </div>
 
     <Grid container>
     <Grid item xs={12} md={9}>
@@ -134,8 +137,11 @@ function Home(props) {
 
       </Grid>
       <Grid item xs={5} md={4} lg={3}>
-      <div className="alert alert-info ml-2 mt-2" role="alert">
-          Check out
+      <div className="ml-2 mt-2" style={{
+          fontWeight:'bold',
+          textDecoration:'underline'
+        }}>
+          <h2>Check out</h2>
       </div>
       <MediaCard
       image='https://rickandmortyapi.com/api/character/avatar/221.jpeg' 
