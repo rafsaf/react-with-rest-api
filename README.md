@@ -1,7 +1,7 @@
 ## Project description
 
 ### Link to site via github-pages
-  * [https://rafsaf.github.io/react-with-rest-api/](https://rafsaf.github.ioreact-with-rest-api)
+  * [https://rafsaf.github.io/react-with-rest-api/](https://rafsaf.github.io/react-with-rest-api/)
 
 ### Technologies
 
