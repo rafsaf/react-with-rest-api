@@ -1,8 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from "axios";
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -15,29 +13,23 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';
-
+import Avatar from '@material-ui/core/Avatar';
 
 class TableSingleRow extends React.Component {
   constructor(props) {
     super(props);
-    this.id = props.id;
-    this.name = props.name;
-    this.status = props.status;
-    this.species = props.species;
-    this.gender = props.gender;
-    this.onClick = props.onClick;
 
   }
 
   render() {
     return (
       <TableRow>
-        <TableCell>{this.id}</TableCell>
-        <TableCell>{this.name}</TableCell>
-        <TableCell>{this.status}</TableCell>
-        <TableCell>{this.species}</TableCell>
-        <TableCell>{this.gender}</TableCell>
-        <TableCell><Button color="secondary" onClick={this.onClick}>X</Button></TableCell>
+        <TableCell><Avatar alt={this.props.id} src={this.props.image} /></TableCell>
+        <TableCell>{this.props.name}</TableCell>
+        <TableCell>{this.props.status}</TableCell>
+        <TableCell>{this.props.species}</TableCell>
+        <TableCell>{this.props.gender}</TableCell>
+        <TableCell><Button color="secondary" onClick={() => this.props.onClick(this.props.id)}>X</Button></TableCell>
       </TableRow>
     );
   }
@@ -46,12 +38,51 @@ class TableSingleRow extends React.Component {
 class SimpleTable extends React.Component {
   constructor() {
     super();
-    this.state = { data: [], numbersUsed: new Set([0]) };
+    this.addMiddle = this.addMiddle.bind(this);
+    this.addLast = this.addLast.bind(this);
+    this.deleteRow = this.deleteRow.bind(this);
+    this.deleteAllRows = this.deleteAllRows.bind(this);
+    this.state = { 
+      data: [], 
+      numbersUsed: new Set([0]),
+      
+    };
+  }
+  toLocalStorage() {
+    localStorage.setItem(
+      'data',
+      JSON.stringify(this.state.data)
+    );
+    localStorage.setItem(
+      'numbersUsed',
+      JSON.stringify([...this.state.numbersUsed])
+    );
+
+  }
+
+  scrollEnd = () => {
+    this.tableEndRef.scrollIntoView({ behavior: "smooth" });
+  }
+  scrollStart = () => {
+    this.tableStartRef.scrollIntoView({ behavior: "smooth" });
   }
 
   componentDidMount() {
-    this.addLast();
+    this.documentData = JSON.parse(localStorage.getItem('data'));
+    this.documentNumbersUsed = JSON.parse(localStorage.getItem('numbersUsed'));
+    console.log(this.documentNumbersUsed);
+    if (localStorage.getItem('data')) {
+        this.setState({
+          data: this.documentData,
+    });
+    }
+    if (localStorage.getItem('numbersUsed')) {
+        this.setState({
+          numbersUsed: new Set(this.documentNumbersUsed),
+    });
+    }
   }
+
 
   nextLastNumber() {
     let maxNumber = Math.max(...this.state.numbersUsed);
@@ -79,9 +110,7 @@ class SimpleTable extends React.Component {
     .then(res => this.setState(this.setState(
       {
         data: this.state.data.concat(res.data),
-      })));
-    console.log(this.state.data);
-    console.log(this.state.numbersUsed);
+      }))).then(() => this.toLocalStorage());
     
   }
 
@@ -91,7 +120,7 @@ class SimpleTable extends React.Component {
     .then(res => this.setState(this.setState(
       {
         data: this.state.data.concat(res.data),
-      })));
+      }))).then(() => this.toLocalStorage());
   }
 
   deleteRow(id) {
@@ -103,6 +132,15 @@ class SimpleTable extends React.Component {
         data: arrayCopy,
         numbersUsed:numbersCopy,
       });
+    this.toLocalStorage();
+  }
+
+  deleteAllRows() {
+  this.setState({
+    data: [],
+    numbersUsed: new Set([0]),
+  });
+  localStorage.clear();
   }
 
   render() {
@@ -122,21 +160,39 @@ class SimpleTable extends React.Component {
         <Grid item xs={2}>
         <div className='buttons'>
         <List component="nav" aria-label="mailbox folders">
-          <ListItem button onClick={() => this.addMiddle()}>
+          <ListItem>
+          
+          <ListItemText primary="Options" />
+          
+          </ListItem>
+          <Divider dark />
+          <ListItem button onClick={this.addMiddle}>
           <Icon>add_circle</Icon>
           <ListItemText primary="&nbsp;Add middle" />
           </ListItem>
           <Divider light />
-          <ListItem button onClick={() => this.addLast()}>
+          <ListItem button onClick={this.addLast}>
           <Icon>add_circle</Icon>
           <ListItemText primary="&nbsp;Add last" />
           </ListItem>
           <Divider light />
-          <ListItem button onClick={() => this.setState({data: [], numbersUsed: new Set([0]) })}>
+          <ListItem button onClick={this.scrollStart}>
+            <Icon>arrow_drop_up</Icon>
+          <ListItemText primary="&nbsp; Go up" />
+          </ListItem>
+          <Divider light />
+          <ListItem button onClick={this.scrollEnd}>
+            <Icon>arrow_drop_down</Icon>
+          <ListItemText primary="&nbsp; Go down" />
+          </ListItem>
+          <Divider light />
+          <ListItem button onClick={this.deleteAllRows}>
           <Icon color='secondary'>delete</Icon>
           <ListItemText primary="&nbsp;Remove all" />
           </ListItem>
           <Divider light />
+
+
         </List>
       
         </div>
@@ -145,16 +201,16 @@ class SimpleTable extends React.Component {
 
         <Grid item xs={10} style={
           {
-            maxHeight: 'calc(85vh)',
+            maxHeight: 'calc(83vh)',
             overflowY: 'scroll',
           }
         }>
+          <div ref={el => {this.tableStartRef = el}}></div>
         <TableContainer >
-
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
+              <TableCell></TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Species</TableCell>
@@ -169,10 +225,12 @@ class SimpleTable extends React.Component {
               name={row.name} 
               status={row.status} 
               species={row.species} 
-              gender={row.gender}
-              onClick={() => this.deleteRow(row.id)}
+              gender={row.gender} 
+              image={row.image} 
+              onClick={this.deleteRow}
               />
             ))}
+            <div ref={el => {this.tableEndRef = el}}></div>
           </TableBody>
         </Table>
       </TableContainer>

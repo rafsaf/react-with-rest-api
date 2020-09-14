@@ -15,10 +15,10 @@ function NavLink(props) {
   };
 
   return (
-    <li class={liClass}>
+    <li className={liClass}>
       <Link
         onClick={() => props.handleClick(props.pageUrl)}
-        class='nav-link'
+        className='nav-link'
         to={props.pageUrl}>{props.name}
       </Link>
     </li>
@@ -50,12 +50,12 @@ class Navbar extends React.Component {
     return (
       <Router>
         <div id="navbar">
-          <nav class="navbar navbar-expand-lg navbar-light" style={{'background-color': '#e3f2fd'}}>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+          <nav className="navbar navbar-expand-lg navbar-light" style={{'background-color': '#e3f2fd'}}>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarText">
-              <ul class="navbar-nav mr-auto">
+            <div className="collapse navbar-collapse" id="navbarText">
+              <ul className="navbar-nav mr-auto">
 
                 <NavLink 
                 handleClick={this.handleClick} 
@@ -68,22 +68,15 @@ class Navbar extends React.Component {
                  current={this.state.current} 
                  />
 
-                <NavLink handleClick={this.handleClick}
-                 pageUrl='/dogs' name='Dogs' 
-                 current={this.state.current} 
-                 />
 
               </ul>
             </div>
           </nav>
-          <div class="container-fluid mt-2">
+          <div className="container-fluid mt-2">
           <Route exact path="/" component={Home} />
           </div>
-          <div class="container-fluid mt-2">
+          <div className="container-fluid mt-2">
           <Route path="/persons" component={Persons} />
-          </div>
-          <div class="container-fluid mt-2">
-          <Route path="/dogs" component={Dogs} />
           </div>
         </div>
       </Router>
